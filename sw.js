@@ -1,6 +1,6 @@
 // Offline-Hülle: alles aus dem Cache, nichts aus dem Netz außer beim ersten Laden und bei neuer Version.
 // Bei jeder Änderung an den Dateien VERSION erhöhen (der Test prüft die Dateiliste).
-const VERSION = "atelier-v2";
+const VERSION = "atelier-v3";
 const ASSETS = [
   "./",
   "index.html",
@@ -18,7 +18,9 @@ const ASSETS = [
 ];
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // cache: "reload" umgeht den HTTP-Cache (GitHub Pages liefert max-age=600): sonst landen veraltete Dateien im neuen Cache.
+  const fresh = (u) => new Request(u, { cache: "reload" });
+  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(ASSETS.map(fresh))).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", (e) => {
   e.waitUntil(

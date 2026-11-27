@@ -4,6 +4,7 @@ import { newSkill } from "./template.js";
 import { exportSkillZip, exportBundle, importZip } from "./bundle.js";
 
 const KEY = "atelier.v1";
+const APP_VERSION = "v3";
 const $ = (id) => document.getElementById(id);
 const el = { select: $("select"), editor: $("editor"), lines: $("lines"), counts: $("counts"), issues: $("issues"), scan: $("scan"), status: $("status") };
 
@@ -160,4 +161,11 @@ $("file").addEventListener("change", async (ev) => {
 
 load();
 render();
-if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
+$("ver").textContent = `Version ${APP_VERSION}`;
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (hadController) say("Neue Version geladen. Bitte die App einmal schließen und neu öffnen.");
+  });
+}

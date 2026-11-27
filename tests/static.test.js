@@ -44,3 +44,15 @@ test("Eingabefeld: iOS-Auto-Korrektur aus (sonst werden aus -- Gedankenstriche)"
   const html = read("index.html");
   for (const a of ['autocorrect="off"', 'autocapitalize="off"', 'spellcheck="false"']) assert.ok(html.includes(a), a);
 });
+
+test("Update-Sicherheit: Service Worker holt Dateien beim Installieren am HTTP-Cache vorbei", () => {
+  assert.match(sw, /cache:\s*["']reload["']/, "ohne cache: reload landen veraltete Dateien aus dem HTTP-Cache im neuen Cache");
+  assert.doesNotMatch(sw, /addAll\(ASSETS\)/, "addAll(ASSETS) nutzt den HTTP-Cache");
+});
+
+test("Versionsanzeige: sichtbare App-Version und Service-Worker-Version stimmen überein", () => {
+  const swVer = sw.match(/const VERSION = "atelier-(v\d+)"/)[1];
+  const appVer = read("src/app.js").match(/const APP_VERSION = "(v\d+)"/)[1];
+  assert.equal(appVer, swVer, "APP_VERSION in app.js und VERSION in sw.js auseinandergelaufen");
+  assert.match(read("index.html"), /id="ver"/);
+});

@@ -18,7 +18,7 @@ Dann `http://localhost:8765` öffnen. Auf dem iPhone braucht die PWA HTTPS: GitH
 ## Tests
 
 ```
-npm test                                 # 46 Tests, keine Abhängigkeiten, nur Node
+npm test                                 # 48 Tests, keine Abhängigkeiten, nur Node
 node tools/e2e.cjs <Ordner>              # Browsertest, braucht Playwright, Chromium und den Server oben
 ```
 
@@ -35,4 +35,4 @@ node tools/e2e.cjs <Ordner>              # Browsertest, braucht Playwright, Chro
 - Nicht in Safari oder auf dem iPhone getestet (hier nur Chromium). Teilen-Menü, Installation und Offline-Verhalten auf iOS sind ungeprüft.
 - Ob der Claude-Chat die exportierten ZIPs akzeptiert, ist ungeprüft. Das Format folgt der Beschreibung „Ordner im Stamm, `SKILL.md` darin“.
 - Der Scan ist eine Teilmenge von `vet-scan.sh` (keine Code-Regeln) und urteilt nicht.
-- Neue Version ausliefern: `VERSION` in `sw.js` erhöhen, sonst bleibt der alte Cache aktiv.
+- Neue Version ausliefern: `VERSION` in `sw.js` und `APP_VERSION` in `src/app.js` gemeinsam erhöhen (ein Test prüft das), sonst bleibt der alte Cache aktiv. Auf dem iPhone kommt die neue Version nach dem Öffnen im Hintergrund an und ist nach dem nächsten Neustart der App sichtbar, die aktuelle Version steht unten auf der Seite.
