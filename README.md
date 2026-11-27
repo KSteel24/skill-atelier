@@ -1,1 +1,1 @@
-# skil-atelier
+# skill-atelier
