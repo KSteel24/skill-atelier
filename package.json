@@ -1,0 +1,10 @@
+{
+  "name": "skill-atelier",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Skill-Atelier: Skills schreiben, prüfen und als ZIP exportieren. Lokal, ohne Abhängigkeiten.",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
