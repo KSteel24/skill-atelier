@@ -1,6 +1,6 @@
 // Offline-Hülle: alles aus dem Cache, nichts aus dem Netz außer beim ersten Laden und bei neuer Version.
 // Bei jeder Änderung an den Dateien VERSION erhöhen (der Test prüft die Dateiliste).
-const VERSION = "atelier-v1";
+const VERSION = "atelier-v2";
 const ASSETS = [
   "./",
   "index.html",

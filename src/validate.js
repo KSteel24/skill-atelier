@@ -25,6 +25,9 @@ export function parseSkill(text) {
   };
 }
 
+// Vorlagen-Platzhalter <<...>> (neu) und die exakten Texte der alten Vorlage mit einfachen Klammern. <NAME> und ähnliche bleiben erlaubt.
+const PLACEHOLDER = /<<[^<>]+>>|<(?:Fachgebiet in einem Satz|Stichwort [12]|ein Satz|eine Zeile|Schritt (?:eins|zwei|drei)|Format der Antwort in einer Zeile\.)>/;
+
 const lineOf = (t, re) => {
   const i = t.split("\n").findIndex((l) => re.test(l));
   return i < 0 ? undefined : i + 1;
@@ -48,6 +51,8 @@ export function checkSkill(text, { folder, maxLines = MAX_LINES } = {}) {
   else if (!/Nutzen bei/i.test(p.description)) add("warnung", "trigger", "description: enthält kein „Nutzen bei …“ mit Auslösewörtern.");
   if (p.lines > maxLines) add("fehler", "zeilen", `${p.lines} Zeilen, erlaubt sind ${maxLines}.`);
   if (!p.body.trim()) add("fehler", "koerper", "Der Körper ist leer.");
+  const vt = lineOf(t, PLACEHOLDER);
+  if (vt) add("fehler", "vorlage", "Nicht ausgefüllter Vorlagen-Platzhalter: durch echten Text ersetzen.", vt);
   const d = lineOf(t, /[—–]/);
   if (d) add("warnung", "gedankenstrich", "Gedankenstrich gefunden: durch Komma, Punkt oder Doppelpunkt ersetzen.", d);
   const ph = lineOf(t, /\b(TODO|TBD|XXX|FIXME)\b/);

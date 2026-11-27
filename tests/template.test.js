@@ -10,12 +10,14 @@ test("slugify: Umlaute, Sonderzeichen, Länge", () => {
   assert.equal(slugify("x".repeat(100)).length, 64);
 });
 
-test("newSkill: Vorlage besteht die eigene Prüfung und trägt den Namen", () => {
+test("newSkill: Vorlage ist bis zum Ausfüllen unfertig (nur Fehler: vorlage), danach fehlerfrei", () => {
   const t = newSkill("Kauf Berater");
   const p = parseSkill(t);
   assert.equal(p.name, "kauf-berater");
-  const r = checkSkill(t, { folder: "kauf-berater" });
-  assert.deepEqual(r.issues.filter((i) => i.level === "fehler"), []);
+  const codes = (r) => r.issues.filter((i) => i.level === "fehler").map((i) => i.code);
+  assert.deepEqual(codes(checkSkill(t, { folder: "kauf-berater" })), ["vorlage"]);
+  const gefuellt = t.replace(/<<[^<>]+>>/g, "Text");
+  assert.deepEqual(codes(checkSkill(gefuellt, { folder: "kauf-berater" })), []);
   assert.ok(p.lines <= 35);
 });
 

@@ -14,19 +14,19 @@ export function newSkill(title) {
   const heading = String(title ?? "").replace(/[\r\n]+/g, " ").trim() || name;
   return `---
 name: ${name}
-description: <Fachgebiet in einem Satz>. Nutzen bei "<Stichwort 1>", "<Stichwort 2>".
+description: <<Fachgebiet in einem Satz>>. Nutzen bei "<<Stichwort 1>>", "<<Stichwort 2>>".
 ---
 
 # ${heading}
 
-Ziel: <ein Satz>. Grenzen: <eine Zeile>.
+Ziel: <<ein Satz>>. Grenzen: <<eine Zeile>>.
 
 ## Ablauf
-1. <Schritt eins>
-2. <Schritt zwei>
-3. <Schritt drei>
+1. <<Schritt eins>>
+2. <<Schritt zwei>>
+3. <<Schritt drei>>
 
 ## Abgabe
-<Format der Antwort in einer Zeile.>
+<<Format der Antwort in einer Zeile.>>
 `;
 }

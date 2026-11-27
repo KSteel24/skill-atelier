@@ -90,3 +90,21 @@ test("checkSkill: Windows-Zeilenenden (CRLF) werden wie LF behandelt", () => {
   assert.deepEqual(errors(r), []);
   assert.equal(parseSkill(GOOD.replace(/\n/g, "\r\n")).name, "mein-skill");
 });
+
+test("checkSkill: nicht ausgefüllte Vorlagen-Platzhalter sind ein Fehler, mit Zeilennummer", () => {
+  const text = GOOD + "\nZiel: <<ein Satz>>.";
+  const r = checkSkill(text);
+  assert.ok(errors(r).includes("vorlage"));
+  assert.equal(r.ok, false);
+  assert.equal(r.issues.find((i) => i.code === "vorlage").line, text.split("\n").length); // Platzhalter steht in der letzten Zeile
+});
+
+test("checkSkill: auch die alte Vorlagen-Schreibweise mit einfachen Klammern wird erkannt", () => {
+  for (const p of ["<Schritt eins>", "<Fachgebiet in einem Satz>", '<Stichwort 1>', "<eine Zeile>"])
+    assert.ok(errors(checkSkill(GOOD + "\n" + p)).includes("vorlage"), p);
+});
+
+test("checkSkill: echte Platzhalter wie <NAME> oder <IBAN> im Skilltext sind erlaubt", () => {
+  assert.ok(!errors(checkSkill(GOOD + "\nPlatzhalter <NAME>, <IBAN>, <AKTENZEICHEN> sind Absicht.")).includes("vorlage"));
+});
+

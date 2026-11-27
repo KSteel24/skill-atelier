@@ -22,7 +22,9 @@ const res = []; const ok = (n, c, d='') => { res.push([c ? 'PASS' : 'FAIL', n, d
   await page.waitForSelector('#editor');
   const txt = (s) => page.locator(s).innerText();
   const set = async (t) => { await page.fill('#editor', t); };
-  ok('Start: Vorlage ohne Fehler', /^0 Fehler/.test(await txt('#counts')), await txt('#counts'));
+  ok('Start: Vorlage ist unfertig (Platzhalter-Fehler)', /^1 Fehler/.test(await txt('#counts')) && (await txt('#issues')).includes('Vorlagen-Platzhalter'), await txt('#counts'));
+  await page.click('#export');
+  ok('Unfertige Vorlage wird nicht exportiert', (await txt('#status')).startsWith('Nicht exportiert'), await txt('#status'));
   ok('Start: Zeilenzähler', /^Zeilen \d+\/35$/.test(await txt('#lines')), await txt('#lines'));
   const GOOD = '---\nname: browser-test\ndescription: Test. Nutzen bei "x".\n---\n\n# Test\n\nZiel: prüfen.\n';
   await set(GOOD);

@@ -2,7 +2,7 @@
 
 PWA zum Schreiben, Prüfen und Exportieren von Skills (`SKILL.md`) direkt auf dem iPhone. Alles läuft im Browser, nichts wird gesendet.
 
-- **Editor mit Live-Prüfung** nach unserem Standard: Frontmatter, Name (a-z, 0-9, Bindestrich), Beschreibung bis 1024 Zeichen mit „Nutzen bei“, höchstens 35 Zeilen, Warnung bei Gedankenstrichen und Platzhaltern.
+- **Editor mit Live-Prüfung** nach unserem Standard (Vorlagen-Platzhalter `<<…>>` blockieren den Export, bis sie ausgefüllt sind): Frontmatter, Name (a-z, 0-9, Bindestrich), Beschreibung bis 1024 Zeichen mit „Nutzen bei“, höchstens 35 Zeilen, Warnung bei Gedankenstrichen und Platzhaltern.
 - **Sicherheits-Scan** mit den Textregeln aus `scripts/vet-scan.sh` (HTML-Kommentare, unsichtbare Zeichen, Base64, Konfiguration mit Wirkung, Ausleitung, Telemetrie, Verschweigen). Eine Hilfe, kein Ersatz für Skript und Lesen.
 - **Export** als ZIP je Skill (Ordner im Stamm, `SKILL.md` darin) oder als Bündel mit je einem ZIP pro Skill. Auf dem iPhone über das Teilen-Menü, sonst als Download.
 - **Import** von Skill-ZIPs und Bündeln. Vorhandene Namen werden übersprungen, nicht überschrieben. Fremde Dateien werden gezählt und ignoriert, nie ausgeführt.
@@ -18,7 +18,7 @@ Dann `http://localhost:8765` öffnen. Auf dem iPhone braucht die PWA HTTPS: GitH
 ## Tests
 
 ```
-npm test                                 # 43 Tests, keine Abhängigkeiten, nur Node
+npm test                                 # 46 Tests, keine Abhängigkeiten, nur Node
 node tools/e2e.cjs <Ordner>              # Browsertest, braucht Playwright, Chromium und den Server oben
 ```
 
